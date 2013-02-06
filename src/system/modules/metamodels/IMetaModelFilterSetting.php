@@ -20,6 +20,7 @@
  * @package	   MetaModels
  * @subpackage Interfaces
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Oliver Hoff <oliver@hofff.com>
  */
 interface IMetaModelFilterSetting
 {
