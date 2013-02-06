@@ -21,9 +21,11 @@
  * @package	   MetaModels
  * @subpackage Core
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Oliver Hoff <oliver@hofff.com>
  */
 class MetaModelFilterSettingSimpleLookup extends MetaModelFilterSetting
 {
+	
 	/**
 	 * {@inheritdoc}
 	 */
@@ -82,7 +84,7 @@ class MetaModelFilterSettingSimpleLookup extends MetaModelFilterSetting
 	/**
 	 * {@inheritdoc}
 	 */
-	public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
+	public function addRules(IMetaModelFilter $objFilter, $arrFilterUrl)
 	{
 		$objMetaModel = $this->getMetaModel();
 		$objAttribute = $objMetaModel->getAttributeById($this->get('attr_id'));
@@ -208,5 +210,5 @@ class MetaModelFilterSettingSimpleLookup extends MetaModelFilterSetting
 			$this->getParamName() => $this->prepareFrontendFilterWidget($arrWidget, $arrFilterUrl, $arrJumpTo, $blnAutoSubmit)
 		);
 	}
+	
 }
-
