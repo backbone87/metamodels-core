@@ -21,9 +21,11 @@
  * @package	   MetaModels
  * @subpackage Core
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Oliver Hoff <oliver@hofff.com>
  */
-class MetaModelFilterSettingConditionOr extends MetaModelFilterSettingWithChilds
+class MetaModelFilterSettingConditionOr extends MetaModelFilterSettingAggregate
 {
+	
 	/**
 	 * Generates the filter rules based upon the given fulter url.
 	 *
@@ -31,16 +33,16 @@ class MetaModelFilterSettingConditionOr extends MetaModelFilterSettingWithChilds
 	 *
 	 * @see MetaModelFilterSetting::prepareRules()
 	 */
-	public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
+	public function addRules(IMetaModelFilter $objFilter, $arrFilterUrl)
 	{
 		$objFilterRule = new MetaModelFilterRuleOR($this->get('stop_after_match'));
-		foreach ($this->arrChilds as $objChildSetting)
+		foreach ($this as $objSetting)
 		{
 			$objSubFilter = new MetaModelFilter($this->getMetaModel());
-			$objChildSetting->prepareRules($objSubFilter, $arrFilterUrl);
+			$objSetting->addRules($objSubFilter, $arrFilterUrl);
 			$objFilterRule->addChild($objSubFilter);
 		}
 		$objFilter->addFilterRule($objFilterRule);
 	}
+	
 }
-
