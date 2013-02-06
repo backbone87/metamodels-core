@@ -21,16 +21,17 @@
  * @package	   MetaModels
  * @subpackage Core
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Oliver Hoff <oliver@hofff.com>
  */
-class MetaModelFilterSettingConditionAnd extends MetaModelFilterSettingWithChilds
+class MetaModelFilterSettingConditionAnd extends MetaModelFilterSettingAggregate
 {
-	public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
+	
+	public function addRules(IMetaModelFilter $objFilter, array $arrFilterUrl = null)
 	{
 		$objSubFilter = new MetaModelFilter($this->getMetaModel());
-
-		foreach ($this->arrChilds as $objChildSetting)
+		foreach ($this as $objSetting)
 		{
-			$objChildSetting->prepareRules($objSubFilter, $arrFilterUrl);
+			$objSetting->addRules($objSubFilter, $arrFilterUrl);
 		}
 
 		$objFilterRule = new MetaModelFilterRuleAND();
@@ -38,5 +39,5 @@ class MetaModelFilterSettingConditionAnd extends MetaModelFilterSettingWithChild
 
 		$objFilter->addFilterRule($objFilterRule);
 	}
+	
 }
-
