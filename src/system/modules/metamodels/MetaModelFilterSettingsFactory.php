@@ -22,6 +22,7 @@
  * @package	   MetaModels
  * @subpackage Interfaces
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Oliver Hoff <oliver@hofff.com>
  */
 class MetaModelFilterSettingsFactory implements IMetaModelFilterSettingsFactory
 {
@@ -60,6 +61,49 @@ class MetaModelFilterSettingsFactory implements IMetaModelFilterSettingsFactory
 			$objSetting = self::$arrInstances[$intId];
 		}
 		return $objSetting;
+	}
+	
+	public function getById($intId) {
+		$objSetting = Database::getInstance()->prepare(
+			'SELECT p.*,
+					GROUP_CONCAT(c.id ORDER BY c.sorting SEPARATOR \',\') AS aggregates
+			FROM	tl_metamodel_filter AS p
+			LEFT JOIN tl_metamodel_filter AS c ON c.pid = p.id AND c.mm_id = p.mm_id
+			WHERE	p.id = ?
+			GROUP BY p.id
+		')->execute($intId);
+		return $objSetting->numRows ? $this->createSetting($objSetting->row()) : null;
+	}
+	
+	public function getDefaultEmptySetting() {
+		return new MetaModelFilterSettingConditionAnd(array());
+	}
+	
+	protected function createSetting(array $arrRow) {
+		return self::getClassByType($arrRow['type'])->newInstance($arrRow);
+	}
+	
+	const FILTER_SETTING_INTERFACE = 'IMetaModelFilterSetting';
+	
+	protected static $arrClasses = array();
+	
+	protected static function getClassByType($strType) {
+		if(!isset(static::arrClasses[$strType])) {
+			$strClass = $GLOBALS['METAMODELS']['filters'][$strType]['class'];
+			$objClass = new ReflectionClass($strClass);
+			if(!$objClass->isSubclassOf(static::FILTER_SETTING_INTERFACE)) {
+				throw new LogicException(
+					sprintf('Filter configuration: Configured class "%s" for type "%s" must implement "%s"',
+						$strClass,
+						$strType,
+						static::FILTER_SETTING_INTERFACE
+					),
+					1 // TODO exception codes
+				);
+			}
+			static::arrClasses[$strType] = $objClass;
+		}
+		return static::arrClasses[$strType];
 	}
 
 	/**
