@@ -20,18 +20,16 @@
  * @package	   MetaModels
  * @subpackage Core
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Oliver Hoff <oliver@hofff.com>
  */
 class MetaModelFilterSettingIdList extends MetaModelFilterSetting
 {
-	public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
+	
+	public function addRules(IMetaModelFilter $objFilter, $arrFilterUrl)
 	{
-		if ($this->get('items'))
-		{
-			$arrItems = explode(',', (string)$this->get('items'));
-		} else {
-			$arrItems = array();
-		}
+		$arrItems = strval($this->get('items'));
+		$arrItems = strlen($arrItems) ? explode(',', $arrItems) : array();
 		$objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList($arrItems));
 	}
+	
 }
-
