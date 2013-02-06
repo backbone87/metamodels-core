@@ -38,7 +38,7 @@ interface IMetaModelFilterSetting
 	 *
 	 * @return void
 	 */
-	public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl);
+	public function addRules(IMetaModelFilter $objFilter, $arrFilterUrl);
 
 	/**
 	 * TODO: obsolete?
