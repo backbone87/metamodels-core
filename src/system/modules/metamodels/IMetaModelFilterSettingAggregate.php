@@ -16,21 +16,23 @@
 
 /**
  *
- * This interface handles filter setting abstraction for settings that can contain childs.
+ * A filter setting the aggregates attached settings with a implementation specific
+ * aggregate function.
  *
  * @see
  * @package	   MetaModels
  * @subpackage Interfaces
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  */
-interface IMetaModelFilterSettingWithChilds extends IMetaModelFilterSetting
+interface IMetaModelFilterSettingAggregate extends IMetaModelFilterSetting, IteratorAggregate
 {
+	
 	/**
-	 * Adds a child setting to this setting.
+	 * Adds a setting aggregate.
 	 *
 	 * @param IMetaModelFilterSetting $objFilterSetting the setting that shall be added as child.
 	 * @return void
 	 */
-	public function addChild(IMetaModelFilterSetting $objFilterSetting);
+	public function addSetting(IMetaModelFilterSetting $setting);
+	
 }
-
