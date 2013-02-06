@@ -20,21 +20,38 @@
  * @package	   MetaModels
  * @subpackage Interfaces
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Oliver Hoff <oliver@hofff.com>
  */
 interface IMetaModelFilter
 {
-	/**
-	 * Adds a filter rule to this filter chain.
-	 *
-	 * @param IMetaModelFilterRule $objFilterRule the filter rule to add.
-	 */
-	public function addFilterRule(IMetaModelFilterRule $objFilterRule);
 
+	/**
+	 * @return bool True if this filter matches any item; otherwise false
+	 */
+	public function isWildcard();
+	
+	/**
+	 * @return bool True if this filter does not match any item; otherwise false
+	 */
+	public function isEmpty();
+	
+	/**
+	 * @param array $arrIds Filters the given array of IMetaModelItem
+	 * @return array The IMetaModelItem's that match this filter
+	 */
+	public function filter(array $arrItems);
+	
+	/**
+	 * @param IMetaModelItem $objItem The item to match
+	 * @return bool True if this filter matches the given item; otherwise false
+	 */
+	public function match(IMetaModelItem $objItem);
+	
 	/**
 	 * Narrow down the list of Ids that match the given filter.
 	 *
 	 * @return int[]|null all matching Ids or null if all ids did match.
 	 */
 	public function getMatchingIds();
+	
 }
-

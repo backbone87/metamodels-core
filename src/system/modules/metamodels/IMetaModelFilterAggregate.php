@@ -15,22 +15,21 @@
  */
 
 /**
- * This is the MetaModel filter interface.
+ * This is the MetaModel filter aggregate interface.
  *
  * @package	   MetaModels
  * @subpackage Interfaces
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Oliver Hoff <oliver@hofff.com>
  */
-interface IMetaModelFilterRule
+interface IMetaModelFilterAggregate extends IteratorAggregate, Countable
 {
-	/**
-	 * Fetch the ids for all matches for this filter rule.
-	 *
-	 * If no entries have been found, the result is an empty array.
-	 * If no filtering was applied and therefore all ids shall be reported as valid, the return value of NULL is allowed.
-	 *
-	 * @return int[]|null
-	 */
-	public function getMatchingIds();
-}
 
+	/**
+	 * Adds a filter to this filter chain.
+	 *
+	 * @param IMetaModelFilterRule $objFilterRule the filter rule to add.
+	 */
+	public function addAggregateFilter(IMetaModelFilter $objFilter);
+	
+}
