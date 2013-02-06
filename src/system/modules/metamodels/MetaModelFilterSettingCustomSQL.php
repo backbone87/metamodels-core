@@ -21,10 +21,12 @@
  * @package	   MetaModels
  * @subpackage Core
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Oliver Hoff <oliver@hofff.com>
  */
 class MetaModelFilterSettingCustomSQL extends MetaModelFilterSetting
 {
-	public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
+	
+	public function addRules(IMetaModelFilter $objFilter, $arrFilterUrl)
 	{
 		$strSQL = $this->get('customsql');
 		// replace the metamodel table name.
@@ -39,5 +41,5 @@ class MetaModelFilterSettingCustomSQL extends MetaModelFilterSetting
 			$objFilter->addFilterRule($objFilterRule);
 		}
 	}
+	
 }
-
