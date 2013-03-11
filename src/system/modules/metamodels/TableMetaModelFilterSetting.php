@@ -79,9 +79,12 @@ class TableMetaModelFilterSetting extends TableMetaModelHelper
 
 	protected function objectsFromUrl($objDC)
 	{
-		if (!(($this->Input->get('do') == 'metamodels')
-		&& ((is_object($objDC) && $objDC->table != 'tl_metamodel_filtersetting') || ($objDC == 'tl_metamodel_filtersetting'))))
-		{
+		if($this->Input->get('do') != 'metamodels') {
+			return;
+		}
+		if(is_object($objDC) && $objDC->table != 'tl_metamodel_filtersetting') {
+			return;
+		} elseif($objDC != 'tl_metamodel_filtersetting') {
 			return;
 		}
 
@@ -322,30 +325,30 @@ class TableMetaModelFilterSetting extends TableMetaModelHelper
 	 */
 	public function create_callback($strTable, $insertID, $set, $objDC)
 	{
-		$objResult = $this->Database->prepare('UPDATE tl_metamodel_filtersetting %s WHERE id=?')
-		->set(array('fid' => $this->Input->get('id')))
-		->execute($insertID);
+		$objResult = $this->Database->prepare(
+			'UPDATE tl_metamodel_filter SET mm_id = ? WHERE id = ?'
+		)->execute($this->Input->get('id'), $insertID);
 	}
 
 	public function drawOrCondition($arrRow, $strLabel, DataContainer $objDC = null, $imageAttribute='', $strImage)
 	{
 		$strReturn = sprintf(
-		$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typedesc']['conditionor'],
-		'<a href="' . $this->addToUrl('act=edit&amp;id='.$arrRow['id']). '">' . $strImage . '</a>',
-		$strLabel ? $strLabel : $arrRow['type'],
-		$arrRow['type']
+			$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typedesc']['conditionor'],
+			'<a href="' . $this->addToUrl('act=edit&amp;id='.$arrRow['id']). '">' . $strImage . '</a>',
+			$strLabel ? $strLabel : $arrRow['type'],
+			$arrRow['type']
 		);
-
+	
 		return $strReturn;
 	}
-
+	
 	public function drawAndCondition($arrRow, $strLabel, DataContainer $objDC = null, $imageAttribute='', $strImage)
 	{
 		$strReturn = sprintf(
-		$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typedesc']['conditionand'],
-		'<a href="' . $this->addToUrl('act=edit&amp;id='.$arrRow['id']). '">' . $strImage . '</a>',
-		$strLabel ? $strLabel : $arrRow['type'],
-		$arrRow['type']
+			$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typedesc']['conditionand'],
+			'<a href="' . $this->addToUrl('act=edit&amp;id='.$arrRow['id']). '">' . $strImage . '</a>',
+			$strLabel ? $strLabel : $arrRow['type'],
+			$arrRow['type']
 		);
 		return $strReturn;
 	}
